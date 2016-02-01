@@ -1,0 +1,18 @@
+<div class="tile"
+    ng-click="onClick(model())"
+    ng-class="{
+        'tile--1': model().value == 1,
+        'tile--2': model().value == 2,
+        'tile--3': model().value == 3,
+        'tile--4': model().value == 4,
+        'tile--5': model().value == 5,
+        'tile--6': model().value == 6,
+        'tile--7': model().value == 7,
+        'tile--8': model().value == 8,
+        'tile--bomb': model().value == 'x',
+        'tile--flag': model().flagged,
+        'tile--known': model().show
+    }">
+    <i class="fa fa-flag" ng-show="model().flagged"></i>
+    <i class="fa fa-bomb" ng-show="model().show && model().value == 'x'"></i>
+</div>

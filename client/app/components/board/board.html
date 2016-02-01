@@ -1,0 +1,25 @@
+<div class="board">
+    <div class="board__row" ng-repeat="row in board.model() track by $index">
+        <tile ng-repeat="tile in row track by $index"
+            model="tile"
+            on-click="board.showTile(tile)"
+            on-flag="board.flagTile(tile)"></tile>
+    </div>
+    <div class="board__overlay" ng-show="board.win() || board.lose()"
+        ng-class="{
+            'board__overlay--lose': board.lose(),
+            'board__overlay--win': board.win()}">
+        <div class="board__overlay__inner">
+            <div ng-show="board.win()">
+                <div class="win-text">You Win!</div>
+            </div>
+            <div ng-show="board.lose()">
+                <div class="lose-text">Gameover</div>
+            </div>
+            <button type="button" class="new-game-btn"
+                ng-click="board.newGame()">
+                Play again?
+            </button>
+        </div>
+    </div>
+</div>

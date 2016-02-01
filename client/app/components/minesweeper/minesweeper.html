@@ -1,0 +1,28 @@
+<div class="minesweeper" ng-style="{width: game.width}">
+    <div class="game-header">
+        B<i class="fa fa-bomb"></i>mbsweeper
+    </div>
+
+    <div class="game-info">
+        <span>
+            <span class="game-info__label">Remaining Bombs: </span>
+            <span class="game-info__data">{{ game.state.remainingMines }}</span>
+        </span>
+        <span>
+            <span class="game-info__label">Elapsed: </span>
+            <span class="game-info__data">{{ game.state.elapsed + 's'}}</span>
+        </span>
+    </div>
+
+    <board model="game.board"
+        on-action="game.action(action)"
+        win="game.state.win"
+        lose="game.state.lose">
+    </board>
+
+    <div class="game-controls">
+        <button class="new-game-btn" ng-click="game.newGame()">
+            New Game
+        </button>
+    </div>
+</div>

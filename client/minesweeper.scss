@@ -1,0 +1,206 @@
+/*-----------------------------------------------------------------------------
+| General Styles
+-----------------------------------------------------------------------------*/
+* {
+    box-sizing: border-box;
+    font-family: 'Open Sans';
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background-color: #ececec;
+}
+
+@mixin font-size($size: 16, $base: 10) {
+    font-size: $size + px;
+    font-size: ($size / $base) + rem;
+}
+
+.minesweeper {
+    margin: 0 auto;
+}
+
+.game-header {
+    @include font-size(32);
+    color: #555;
+    font-weight: 300;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    .fa {
+        @include font-size(34);
+        transform: translate3d(2px, -2px, 0);
+    }
+}
+
+/*-----------------------------------------------------------------------------
+| Game Info (Remaining Mines + Time Elapsed
+-----------------------------------------------------------------------------*/
+
+.game-info {
+    @include font-size(14);
+    background-color: #ccc;
+    border-top-left-radius: 4px;
+    border-top-radius: 10px;
+    border-top-right-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 15px;
+}
+
+.game-info__label {
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+.game-info__data {
+    font-weight: bold;
+    color: #444;
+}
+
+/*-----------------------------------------------------------------------------
+| Game Controls (New Game button...)
+-----------------------------------------------------------------------------*/
+
+.new-game-btn {
+    @include font-size(16);
+    background-color: #ffbe01;
+    border-width: 0;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 15px;
+    padding: 10px 15px;
+    &:focus {
+        outline: none;
+    }
+}
+
+.lose-text {
+    @extend .end-text;
+    color: #fff;
+    text-shadow: 0 2px 2px #777;
+}
+
+
+/*-----------------------------------------------------------------------------
+| Board Styles
+-----------------------------------------------------------------------------*/
+
+.board {
+    display: flex;
+    flex-flow: row wrap;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+}
+
+.board__overlay {
+    height: 100%;
+    justify-content: space-around;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    &.ng-hide-remove {
+        transition: opacity .75s 1s ease-in-out;
+        opacity: 0;
+
+        &.ng-hide-remove-active {
+            opacity: 1;
+        }
+    }
+}
+
+.board__overlay--win {
+    background-color: rgba(255,255,255, 0.75);
+}
+
+.board__overlay--lose {
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.board__overlay__inner {
+    position: absolute;
+    top: 50%;
+    transform: translate3d(0, -70%, 0);
+    width: 100%;
+
+    .new-game-btn {
+        @include font-size(20);
+    }
+}
+
+.end-text {
+    @include font-size(70);
+    font-weight: bold;
+    text-align: center;
+}
+
+.win-text {
+    @extend .end-text;
+    color: #ffbe01;
+}
+
+.board__row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+/*-----------------------------------------------------------------------------
+| Tile Styles, Numbers and Colors
+-----------------------------------------------------------------------------*/
+
+.tile {
+    @include font-size(13);
+    background-color: #999;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    transition: .15s background-color ease-in-out;
+    width: 30px;
+}
+
+.tile--known {
+    background-color: #ececec;
+}
+
+.tile--flag {
+    color: #ff0000;
+    background-color: lighten(#999, 20%);
+}
+
+.tile--bomb.tile--known {
+    color: #fff;
+    background-color: lighten(#ff0000, 20%);
+}
+
+$tile-types: (
+    1: #0000ff,
+    2: #008200,
+    3: #ff0000,
+    4: #000084,
+    5: #840000,
+    6: #008284,
+    7: #840084,
+    8: #757575
+);
+
+@each $num, $color in $tile-types {
+    .tile--#{$num}.tile--known {
+        color: $color;
+        &:before {
+            content: '#{$num}';
+        }
+    }
+}
