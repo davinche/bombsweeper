@@ -19,7 +19,7 @@ describe('BoardComponent', () => {
         $scope.action = function() {};
         var elem = $compile('<board model="board" on-action="action"></board>')($scope);
         $scope.$digest();
-        scope = elem.isolateScope()
+        scope = elem.isolateScope();
         boardCtrl = scope.board;
         boardCtrl.onAction = function() {};
     });
@@ -36,7 +36,7 @@ describe('BoardComponent', () => {
                         type: 'SHOW'
                     })
                 })
-            )
+            );
         });
 
         it('should reveal surrounding tiles if current tile is an empty tile', () => {
@@ -62,7 +62,7 @@ describe('BoardComponent', () => {
                         type: 'FLAG'
                     })
                 })
-            )
+            );
         });
     });
 
@@ -77,7 +77,7 @@ describe('BoardComponent', () => {
                         type: 'NEW'
                     })
                 })
-            )
+            );
         });
-    })
+    });
 });

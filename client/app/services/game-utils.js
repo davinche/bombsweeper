@@ -112,7 +112,7 @@ angular.module('minesweeper').factory('gameUtils', function($interval) {
         // --------------------------------------------------------------------
         // - zeros represent the empty tile on the board
         // --------------------------------------------------------------------
-        var board = []
+        var board = [];
         for (var row=0; row < settings.rows; row++) {
             board.push(
                 Array.apply(null, Array(settings.cols))
@@ -164,5 +164,5 @@ angular.module('minesweeper').factory('gameUtils', function($interval) {
         newGameState: newGameState,
         getNeighborTiles: getNeighborTiles,
         fillMines: fillMines
-    }
+    };
 });

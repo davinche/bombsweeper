@@ -27,5 +27,5 @@ angular.module('minesweeper').directive('tile', function() {
                 elem.unbind(rightClickHandler);
             });
         }
-    }
+    };
 });

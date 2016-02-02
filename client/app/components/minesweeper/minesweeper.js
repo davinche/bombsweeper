@@ -34,7 +34,7 @@ angular.module('minesweeper').directive('minesweeper', function() {
                         ctrl.state.win = true;
                     }
                 }
-            }
+            };
 
             // ----------------------------------------------------------------
             // Game Over
@@ -47,7 +47,7 @@ angular.module('minesweeper').directive('minesweeper', function() {
                     // Declare loss
                     ctrl.state.lose = true;
                 });
-            }
+            };
 
             // ----------------------------------------------------------------
             // Tile Input (show or flag a tile)
@@ -68,14 +68,14 @@ angular.module('minesweeper').directive('minesweeper', function() {
                 }
 
                 if (tile.value === 'x') {
-                    gameover()
+                    gameover();
                 } else {
                     tile.show = true;
                     tile.flagged = false;
                     ctrl.state.revealed++;
                     checkWin();
                 }
-            }
+            };
 
             // Handle flipping the flagged attribute on a tile
             var flagTile = (tile) => {
@@ -91,13 +91,13 @@ angular.module('minesweeper').directive('minesweeper', function() {
                     ctrl.state.flagged--;
                 }
                 checkWin();
-            }
+            };
 
             // Handle new game action
             this.newGame = () => {
                 ctrl.board = gameUtils.newBoard(gameSettings);
                 ctrl.state = gameUtils.newGameState(gameSettings);
-            }
+            };
 
             // ----------------------------------------------------------------
             // Game Action Handler
@@ -117,12 +117,11 @@ angular.module('minesweeper').directive('minesweeper', function() {
                         break;
                     default:
                         throw 'unknown action type';
-                        break;
                 }
             };
 
             // Start the game
             this.newGame();
         }
-    }
+    };
 });

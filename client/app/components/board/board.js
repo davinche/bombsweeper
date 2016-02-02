@@ -10,7 +10,7 @@ angular.module('minesweeper').directive('board', function() {
         },
         bindToController: true,
         controllerAs: 'board',
-        controller: function(gameUtils, gameSettings) {
+        controller: function(gameUtils) {
             // Wrapper around getNeighbors to additionally filter out
             // all flagged and already revealed tiles
             var getUnknownNeighbors = (tile) => {
@@ -42,7 +42,7 @@ angular.module('minesweeper').directive('board', function() {
                         this.showTile(neighborTile);
                     });
                 }
-            }
+            };
 
             // ----------------------------------------------------------------
             // Flag a tile
@@ -51,7 +51,7 @@ angular.module('minesweeper').directive('board', function() {
                 this.onAction({
                     action: { type: 'FLAG', tile: tile }
                 });
-            }
+            };
 
             // ----------------------------------------------------------------
             // Create a New Game
@@ -59,8 +59,8 @@ angular.module('minesweeper').directive('board', function() {
             this.newGame = () => {
                 this.onAction({
                     action: { type: 'NEW' }
-                })
-            }
+                });
+            };
         }
-    }
+    };
 });
