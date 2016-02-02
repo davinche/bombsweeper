@@ -22,3 +22,5 @@ fourseven:scss
 angular:angular-animate
 urigo:angular
 angular:angular-mocks
+sanjo:jasmine
+velocity:html-reporter

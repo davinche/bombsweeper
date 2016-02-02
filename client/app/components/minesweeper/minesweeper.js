@@ -1,6 +1,7 @@
 angular.module('minesweeper').directive('minesweeper', function() {
     return {
         restrict: 'E',
+        scope: {},
         controllerAs: 'game',
         templateUrl: 'client/app/components/minesweeper/minesweeper.html',
         bindToController: true,
