@@ -38,7 +38,7 @@ body {
 }
 
 /*-----------------------------------------------------------------------------
-| Game Info (Remaining Mines + Time Elapsed
+| Game Info (Remaining Mines + Time Elapsed)
 -----------------------------------------------------------------------------*/
 
 .game-info {
@@ -79,12 +79,6 @@ body {
     &:focus {
         outline: none;
     }
-}
-
-.lose-text {
-    @extend .end-text;
-    color: #fff;
-    text-shadow: 0 2px 2px #777;
 }
 
 
@@ -146,6 +140,12 @@ body {
 .win-text {
     @extend .end-text;
     color: #ffbe01;
+}
+
+.lose-text {
+    @extend .end-text;
+    color: #fff;
+    text-shadow: 0 2px 2px #777;
 }
 
 .board__row {
