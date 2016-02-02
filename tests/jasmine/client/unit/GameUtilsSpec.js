@@ -9,26 +9,83 @@ describe('GameUtils', () => {
     });
 
     describe('NewBoard', () => {
-        it('generates a board with the given number of mines given game settings', () => {
+        it('generates a board with the proper rows and columns given settings', () => {
             var gameSettings = {
                 rows: 10,
-                cols: 10,
+                cols: 11,
                 mines: 10
             };
             var board = gameUtils.newBoard(gameSettings);
-            expect(board.mines.length).toBe(10);
+            expect(board.length).toBe(10);
+            expect(board[0].length).toBe(11);
+        });
 
-            // Count it ourselves
-            var numMines = 0;
+        it('generates an empty board', () => {
+            var gameSettings = {
+                rows: 3,
+                cols: 3,
+                mines: 2
+            };
+            var board = gameUtils.newBoard(gameSettings);
+            var nonEmpty = false;
             board.forEach((row) => {
                 row.forEach((tile) => {
-                    if (tile.value === 'x') {
-                        numMines++;
+                    if (tile.value !== 0) {
+                        nonEmpty = true;
                     }
                 });
             });
-            expect(numMines).toBe(10);
+            expect(nonEmpty).toBe(false);
         });
+    });
+
+    describe('FillMines', () => {
+        it('fills the board with the correct number of mines', () => {
+            var gameSettings = {
+                rows: 10,
+                cols: 11,
+                mines: 10
+            };
+            var board = gameUtils.newBoard(gameSettings);
+            var tile = board[0][0];
+
+            gameUtils.fillMines(board, gameSettings, tile);
+            expect(board.mines.length).toBe(gameSettings.mines);
+
+            // Also count it manually
+            var mineCount = 0;
+            board.forEach((row) => {
+                row.forEach((tile) => {
+                    if (tile.value === 'x') {
+                        mineCount++;
+                    }
+                });
+            });
+            expect(mineCount).toBe(gameSettings.mines);
+        });
+
+        it('ensures first tile is always empty and neighbors are not bombs', () => {
+            var gameSettings = {
+                rows: 3,
+                cols: 3,
+                mines: 1
+            };
+
+            var selectedTileOrNeighborIsBomb = false;
+            var board = gameUtils.newBoard(gameSettings);
+            var tile = board[0][0];
+            var neighbors = gameUtils.getNeighborTiles(board, tile);
+            if (tile.value !== 0) {
+                selectedTileOrNeighborIsBomb = true;
+            }
+            neighbors.forEach((neighbor) => {
+                if (neighbor.value === 'x') {
+                    selectedTileOrNeighborIsBomb = true;
+                }
+            });
+            expect(selectedTileOrNeighborIsBomb).toBe(false);
+        });
+
     });
 
     describe('GetNeighborTiles', () => {

@@ -60,7 +60,10 @@ angular.module('minesweeper').directive('minesweeper', function() {
                     return;
                 }
 
+                // We have not started the game yet
                 if (!ctrl.state.timer) {
+                    // fill the new board with mines and start the timer
+                    gameUtils.fillMines(ctrl.board, gameSettings, tile);
                     ctrl.state.startTimer();
                 }
 

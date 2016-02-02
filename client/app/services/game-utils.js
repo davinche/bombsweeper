@@ -49,41 +49,37 @@ angular.module('minesweeper').factory('gameUtils', function($interval) {
     };
 
     // ------------------------------------------------------------------------
-    // Create a new board given game settings:
+    // Populate the board with mines
     // ------------------------------------------------------------------------
-    // Game settings is an object that contains:
-    // - rows (int): Number of rows for the game board
-    // - cols (int): Number of cols for the game board
-    // - mines (int): Number of mines to be placed on the board
+    // A friend/ex-minesweeper pro player pointed out that minesweeper on vista
+    // actually starts the first clicked tile as an empty tile.
+    //
+    // This function is used to populate the board with mines such that
+    // that first tile is always an empty tile.
     // ------------------------------------------------------------------------
-    var newBoard = (settings) => {
+    var fillMines = (board, settings, firstTile) => {
         var mines = settings.mines;
-
-        // Create a new array with all zeros
-        // --------------------------------------------------------------------
-        // - zeros represent the empty tile on the board
-        // --------------------------------------------------------------------
-        var board = []
-        for (var row=0; row < settings.rows; row++) {
-            board.push(
-                Array.apply(null, Array(settings.cols))
-                .map((curr, col) => {
-                    return new Tile(row, col);
-                })
-            );
-        }
 
         // Track mine tiles
         var mineTiles = [];
+
+        // firstTile + neighbors can't be mines
+        var nonMinesPositions = getNeighborTiles(board, firstTile)
+            .map((tile) => {
+                return `${tile.row}:${tile.col}`;
+            });
+        nonMinesPositions.push(`${firstTile.row}:${firstTile.col}`);
 
         // Randomly insert mines onto the board
         while(mines) {
             let randRow = Math.floor(Math.random() * settings.rows);
             let randCol = Math.floor(Math.random() * settings.cols);
             let tile = board[randRow][randCol];
+            let tilePos = `${tile.row}:${tile.col}`;
 
-            // If the tile is empty (aka 0), then make it a mine (mark it as x)
-            if (tile.value === 0) {
+            // If the tile is empty (aka 0), and tile is not in our list of
+            // "nonMines" then make the tile a mine (mark it as x)
+            if (nonMinesPositions.indexOf(tilePos) < 0 && tile.value === 0) {
                 tile.value = 'x';
                 mineTiles.push(tile);
                 mines--;
@@ -102,8 +98,33 @@ angular.module('minesweeper').factory('gameUtils', function($interval) {
 
         // Save reference to all of the mine tiles
         board.mines = mineTiles;
+    };
+
+    // ------------------------------------------------------------------------
+    // Create a new board given game settings
+    // ------------------------------------------------------------------------
+    // Game settings is an object that contains:
+    // - rows (int): Number of rows for the game board
+    // - cols (int): Number of cols for the game board
+    // ------------------------------------------------------------------------
+    var newBoard = (settings) => {
+        // Create a new array with all zeros
+        // --------------------------------------------------------------------
+        // - zeros represent the empty tile on the board
+        // --------------------------------------------------------------------
+        var board = []
+        for (var row=0; row < settings.rows; row++) {
+            board.push(
+                Array.apply(null, Array(settings.cols))
+                .map((curr, col) => {
+                    return new Tile(row, col);
+                })
+            );
+        }
+
         return board;
     };
+
 
     // ------------------------------------------------------------------------
     // Create new object to track the current game's state
@@ -141,6 +162,7 @@ angular.module('minesweeper').factory('gameUtils', function($interval) {
     return {
         newBoard: newBoard,
         newGameState: newGameState,
-        getNeighborTiles: getNeighborTiles
+        getNeighborTiles: getNeighborTiles,
+        fillMines: fillMines
     }
 });
