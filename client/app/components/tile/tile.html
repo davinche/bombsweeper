@@ -14,5 +14,7 @@
         'tile--known': model().show
     }">
     <i class="fa fa-flag" ng-show="model().flagged"></i>
-    <i class="fa fa-bomb" ng-show="model().show && model().value == 'x'"></i>
+    <i class="fa fa-bomb"
+        ng-show="model().show && model().value == 'x' && !model().flagged">
+    </i>
 </div>
