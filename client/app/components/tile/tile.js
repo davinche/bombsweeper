@@ -1,4 +1,4 @@
-angular.module('minesweeper').directive('tile', function() {
+angular.module('minesweeper').directive('tile', function($timeout) {
     return {
         restrict: 'E',
         templateUrl: 'client/app/components/tile/tile.html',
@@ -20,11 +20,31 @@ angular.module('minesweeper').directive('tile', function() {
                 }
             };
 
+            var clickTimeout = null;
+            var leftClickHandler = (e) => {
+                // Make sure it is a left click
+                if (!clickTimeout) {
+                    clickTimeout = $timeout(() => {
+                        scope.onClick()(scope.model(), 1);
+                    }, 150);
+                } else {
+                    scope.onClick()(scope.model(), 2);
+                    $timeout.cancel(clickTimeout);
+                    clickTimeout = null;
+                }
+            };
+
             elem.bind('mousedown', rightClickHandler);
+            elem.bind('click', leftClickHandler);
 
             // Cleanup
             scope.$on('$destroy', function() {
-                elem.unbind(rightClickHandler);
+                elem.unbind('mousedown', rightClickHandler);
+                elem.unbind('click', leftClickHandler);
+                if (clickTimeout) {
+                    $timeout.cancel(clickTimeout);
+                    clickTimeout = null;
+                }
             });
         }
     };

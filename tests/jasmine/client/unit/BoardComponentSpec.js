@@ -24,6 +24,44 @@ describe('BoardComponent', () => {
         boardCtrl.onAction = function() {};
     });
 
+    describe('handle left click', () => {
+        it('clicks an unrevealed tile', () => {
+            tile.value = 1;
+            spyOn(boardCtrl, 'showTile');
+            boardCtrl.handleClick(tile, 1);
+            expect(boardCtrl.showTile).toHaveBeenCalled();
+        });
+
+        it('should not reveal an aleady shown tile', () => {
+            tile.value = 1;
+            tile.show = true
+            spyOn(boardCtrl, 'showTile');
+            boardCtrl.handleClick(tile, 1);
+            expect(boardCtrl.showTile).not.toHaveBeenCalled();
+        });
+
+        it('reveals neighbors if neighboring flagged tiles match the current tile value', () => {
+            var gameUtils = $injector.get('gameUtils');
+            tile.value = 1;
+            tile.show = true
+            var neighbors = gameUtils.getNeighborTiles(board, tile);
+            neighbors[0].flagged = true;
+            spyOn(boardCtrl, 'showTile');
+            boardCtrl.handleClick(tile, 2);
+            expect(boardCtrl.showTile).toHaveBeenCalled();
+        });
+
+        it('does nothing if the number of flagged neighbor tiles does not equal the current tile value', () => {
+            var gameUtils = $injector.get('gameUtils');
+            tile.value = 1;
+            tile.show = true
+            var neighbors = gameUtils.getNeighborTiles(board, tile);
+            spyOn(boardCtrl, 'showTile');
+            boardCtrl.handleClick(tile, 2);
+            expect(boardCtrl.showTile).not.toHaveBeenCalled();
+        });
+    });
+
     describe('show tile', () => {
         it('should intend send an intention to reveal a tile', () => {
             tile.value = 1;

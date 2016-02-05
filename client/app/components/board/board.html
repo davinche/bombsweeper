@@ -2,7 +2,7 @@
     <div class="board__row" ng-repeat="row in board.model() track by $index">
         <tile ng-repeat="tile in row track by $index"
             model="tile"
-            on-click="board.showTile(tile)"
+            on-click="board.handleClick"
             on-flag="board.flagTile(tile)"></tile>
     </div>
     <div class="board__overlay" ng-show="board.win() || board.lose()"

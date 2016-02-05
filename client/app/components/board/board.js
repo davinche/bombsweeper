@@ -21,6 +21,40 @@ angular.module('minesweeper').directive('board', function() {
             };
 
             // ----------------------------------------------------------------
+            // Handle click and double vs doubleclick
+            // ----------------------------------------------------------------
+            // Doubleclicking a tile that has already been revealed and the
+            // number of flagged tiles match the number
+            // ----------------------------------------------------------------
+            this.handleClick = (tile, clickCount) => {
+                if (!tile.show) {
+                    this.showTile(tile);
+                // Reveal all unkonwn surrounding tiles on double click
+                // of an already revealed tile
+                } else if (tile.show && tile.value !== 'x' && tile.value > 0
+                           && clickCount > 1) {
+
+                    var neighbors = gameUtils.getNeighborTiles(this.model(), tile);
+                    var numFlagged = neighbors.filter((nTile) => {
+                        return nTile.flagged;
+                    }).length;
+
+                    // Reveal neighbors if the tile value and the
+                    // number of flagged neighbors match
+                    if (numFlagged === tile.value) {
+                        neighbors.filter((nTile) => {
+                            return !(nTile.show || nTile.flagged);
+                        }).forEach((neighborTile) => {
+                            this.showTile(neighborTile);
+                            if(!(this.win() || this.lose())) {
+                                this.handleClick(neighborTile, 2);
+                            }
+                        });
+                    }
+                }
+            };
+
+            // ----------------------------------------------------------------
             // Reveal a hidden tile
             // ----------------------------------------------------------------
             this.showTile = (tile) => {
