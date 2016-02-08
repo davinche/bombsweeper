@@ -23,17 +23,6 @@ angular.module('minesweeper').directive('minesweeper', function() {
                     ctrl.state.stopTimer();
                     return;
                 }
-                // Win if all of the mines are in the correct place
-                if (ctrl.state.remainingMines === 0) {
-                    // Win if all of the mined tiles are flagged
-                    let win = ctrl.board.mines.every((tile) => {
-                        return tile.flagged;
-                    });
-                    if (win) {
-                        ctrl.state.stopTimer();
-                        ctrl.state.win = true;
-                    }
-                }
             };
 
             // ----------------------------------------------------------------
