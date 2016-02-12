@@ -8,19 +8,17 @@ angular.module('minesweeper').directive('tile', function($timeout) {
             onFlag: '&'
         },
         link: function(scope, elem) {
-            var rightClickHandler = function(e) {
-                // Disable Right Click
-                e.preventDefault();
-                e.stopPropagation();
-                // Flag that current tile
-                if (e.button === 2) {
-                    scope.$apply(() => {
-                        scope.onFlag(scope.model());
-                    });
-                }
+            var clickTimeout = null;
+
+            // Apply flag to tile
+            var applyFlag = () => {
+                $timeout.cancel(clickTimeout);
+                clickTimeout = null;
+                scope.$apply(() => {
+                    scope.onFlag(scope.model());
+                });
             };
 
-            var clickTimeout = null;
             var leftClickHandler = (e) => {
                 // Make sure it is a left click
                 if (!clickTimeout) {
@@ -34,12 +32,13 @@ angular.module('minesweeper').directive('tile', function($timeout) {
                 }
             };
 
-            elem.bind('mousedown', rightClickHandler);
             elem.bind('click', leftClickHandler);
+
+            // Right-click (or control left-click) should apply flag to tile.
+            elem.bind('contextmenu', applyFlag);
 
             // Cleanup
             scope.$on('$destroy', function() {
-                elem.unbind('mousedown', rightClickHandler);
                 elem.unbind('click', leftClickHandler);
                 if (clickTimeout) {
                     $timeout.cancel(clickTimeout);
