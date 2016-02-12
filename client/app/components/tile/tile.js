@@ -40,6 +40,7 @@ angular.module('minesweeper').directive('tile', function($timeout) {
             // Cleanup
             scope.$on('$destroy', function() {
                 elem.unbind('click', leftClickHandler);
+                elem.unbind('contextmenu', applyFlag);
                 if (clickTimeout) {
                     $timeout.cancel(clickTimeout);
                     clickTimeout = null;
